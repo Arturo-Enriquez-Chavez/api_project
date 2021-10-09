@@ -1,8 +1,8 @@
 const express=require('express'); //sintaxis de importacion en nodejs
 require('dotenv').config();
+
 const { dbConection } = require('./config/database');
 const cors=require('cors');
-
 
 //Crear el servidor express
 const app=express();
@@ -10,28 +10,25 @@ const app=express();
 //Configurar cors
 app.use(cors()); //cualquier servior distinto a mi servidor se ejecutará
 
+//Lectura y parseo del body
+app.use(express.json());
 
 //Conexion BD
 dbConection();
-//console.log(process.env);
-//console.log(process.env.DB_CNN);
 
-//Rutas de la API Proyectos
-app.get('/',(req,res)=>{
-    res.status(400).json({
-        ok:true,
-        msg:'Bienvenidos a NodeJS'
-    });
-});
+//console.log(process.env);
+
+//Rutas de la API
+app.use('/api/usuarios',require('./routes/usuarios.routes'));
+app.use('/api/login', require('./routes/auth.routes'));
+//app.use('/api/investigadores',require('./routes/investigadores.routes'));
+
 
 //Codigo para desplegar el servidor
 app.listen(process.env.PORT,()=>{
     console.log('Servidor desplegado en el puerto:'+ process.env.PORT);
 })
 
-//app.listen(3000,()=>{
-//    console.log('Servidor desplegado en el puerto:'+ 3000);
-//})
 
 
 //eEOQDBv9ZaTcbZkS
